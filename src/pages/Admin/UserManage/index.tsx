@@ -1,9 +1,9 @@
-import {PlusOutlined} from '@ant-design/icons';
-import type {ActionType, ProColumns} from '@ant-design/pro-components';
-import {ProTable, TableDropdown} from '@ant-design/pro-components';
-import {Button, Image} from 'antd';
-import {useRef} from 'react';
-import {searchUsers} from "@/services/ant-design-pro/api";
+import { PlusOutlined } from '@ant-design/icons';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { ProTable, TableDropdown } from '@ant-design/pro-components';
+import { Button, Image } from 'antd';
+import { useRef } from 'react';
+import { searchUsers } from "@/services/ant-design-pro/api";
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -78,7 +78,7 @@ const columns: ProColumns<API.CurrentUser>[] = [
     ellipsis: true,
     valueType: 'select',
     valueEnum: {
-      0: {text: '普通用户', status: 'Default', },
+      0: { text: '普通用户', status: 'Default', },
       1: {
         text: '管理员',
         status: 'Success',
@@ -176,8 +176,8 @@ const columns: ProColumns<API.CurrentUser>[] = [
         key="actionGroup"
         onSelect={() => action?.reload()}
         menus={[
-          {key: 'copy', name: '复制'},
-          {key: 'delete', name: '删除'},
+          { key: 'copy', name: '复制' },
+          { key: 'delete', name: '删除' },
         ]}
       />,
     ],
@@ -191,6 +191,7 @@ export default () => {
       columns={columns}
       actionRef={actionRef}
       cardBordered
+      //@ts-ignore
       request={async (params, sort, filter) => {
         console.log(sort, filter);
         await waitTime(2000);
@@ -205,16 +206,13 @@ export default () => {
       columnsState={{
         persistenceKey: 'pro-table-singe-demos',
         persistenceType: 'localStorage',
-        defaultValue: {
-          option: {fixed: 'right', disable: true},
-        },
         onChange(value) {
           console.log('value: ', value);
         },
       }}
       rowKey="id"
       search={{
-        labelWidth: 'auto',
+        filterType: 'light',
       }}
       options={{
         setting: {
@@ -242,7 +240,7 @@ export default () => {
       toolBarRender={() => [
         <Button
           key="button"
-          icon={<PlusOutlined/>}
+          icon={<PlusOutlined />}
           onClick={() => {
             actionRef.current?.reload();
           }}

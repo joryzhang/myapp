@@ -8,20 +8,37 @@ const Settings: ProLayoutProps & {
   logo?: string;
 } = {
   navTheme: 'light',
-  // 拂晓蓝
-  colorPrimary: '#1890ff',
-  layout: 'mix',
+  // AI SaaS Royal Blue
+  colorPrimary: '#2563EB',
+  layout: 'side',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: 'AI User Center',
   pwa: true,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
   token: {
-    // 参见ts声明，demo 见文档，通过token 修改样式
-    //https://procomponents.ant.design/components/layout#%E9%80%9A%E8%BF%87-token-%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F
+    // See ts declaration, demo documentation, modify style through token
+    // https://procomponents.ant.design/components/layout#%E9%80%9A%E8%BF%87-token-%E4%BF%AE%E6%94%B9%E6%A0%B7%E5%BC%8F
+    header: {
+      colorBgHeader: '#ffffff',
+      colorHeaderTitle: '#1e293b',
+      colorTextMenu: '#64748b',
+      colorTextMenuSelected: '#2563eb',
+    },
+    sider: {
+      colorMenuBackground: '#ffffff',
+      colorTextMenu: '#64748b',
+      colorTextMenuSelected: '#2563eb',
+      colorBgMenuItemSelected: '#eff6ff', // Slate-50/Blue-50 mix
+    },
+    pageContainer: {
+      paddingBlockPageContainerContent: 24,
+      paddingInlinePageContainerContent: 24,
+      colorBgPageContainer: '#f8fafc', // Slate-50 background
+    }
   },
 };
 

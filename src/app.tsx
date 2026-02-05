@@ -1,18 +1,18 @@
-import {AvatarDropdown, AvatarName, Footer, Question} from '@/components';
-import {currentUser as queryCurrentUser} from '@/services/ant-design-pro/api';
-import {LinkOutlined} from '@ant-design/icons';
-import type {Settings as LayoutSettings} from '@ant-design/pro-components';
-import {SettingDrawer} from '@ant-design/pro-components';
-import {history, Link, RequestConfig} from '@umijs/max';
+import { AvatarDropdown, AvatarName, Footer, Question } from '@/components';
+import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
+import { LinkOutlined } from '@ant-design/icons';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
+import { SettingDrawer } from '@ant-design/pro-components';
+import { history, Link, RequestConfig } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
-import {RunTimeLayoutConfig} from "@@/plugin-layout/types";
+import { RunTimeLayoutConfig } from "@@/plugin-layout/types";
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 /**
  * 无需用户登录态的页面
  */
-const NONEED_LOGIN_WHITE_LIST = ['/user/register',loginPath];
+const NONEED_LOGIN_WHITE_LIST = ['/user/register', loginPath];
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -27,7 +27,8 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      return await queryCurrentUser();
+      const msg = await queryCurrentUser();
+      return msg as unknown as API.CurrentUser;
     } catch (error) {
       history.push(loginPath);
     }
@@ -63,11 +64,16 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.username,
     },
-    footerRender: () => <Footer />,
+    footerRender: () => {
+      if (history.location.pathname === '/ai-chat') {
+        return null;
+      }
+      return <Footer />;
+    },
     onPageChange: () => {
       const { location } = history;
 
-      if (NONEED_LOGIN_WHITE_LIST.includes(location.pathname)){
+      if (NONEED_LOGIN_WHITE_LIST.includes(location.pathname)) {
         return;
       }
       // 如果没有登录，重定向到 login
@@ -97,11 +103,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ],
     links: isDev
       ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-        ]
+        <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+          <LinkOutlined />
+          <span>OpenAPI 文档</span>
+        </Link>,
+      ]
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
@@ -129,6 +135,19 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       );
     },
     ...initialState?.settings,
+    siderWidth: 260, // Wider sidebar for professional look
+    token: {
+      sider: {
+        colorMenuBackground: '#ffffff',
+        colorTextMenu: '#64748b',
+        colorTextMenuSelected: '#2563eb',
+        colorBgMenuItemSelected: '#eff6ff',
+      },
+      pageContainer: {
+        paddingBlockPageContainerContent: 24,
+        paddingInlinePageContainerContent: 40, // More horizontal breathing room
+      },
+    }
   };
 };
 

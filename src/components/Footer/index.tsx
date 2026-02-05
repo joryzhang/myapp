@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         {
           key: 'UserCenter',
           title: '用户中心',
-          href: 'https://pro.ant.design',
+          href: 'https://github.com/joryzhang',
           blankTarget: true,
         },
         {
