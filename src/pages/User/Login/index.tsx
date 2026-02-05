@@ -1,4 +1,5 @@
 import { Footer } from '@/components';
+import Logo from '@/components/Logo';
 import { login } from '@/services/ant-design-pro/api';
 import { LockOutlined, UserOutlined, AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
@@ -8,7 +9,7 @@ import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
-import { GIT_HUB, SYSTEM_LOGO } from "@/constant";
+import { GIT_HUB } from "@/constant";
 
 const { Title, Text } = Typography;
 
@@ -159,7 +160,7 @@ const Login: React.FC = () => {
             filter: 'blur(40px)',
           }} />
 
-          <img src={SYSTEM_LOGO} alt="logo" className={styles.logo} style={{ filter: 'brightness(0) invert(1)' }} />
+          <Logo style={{ marginBottom: '24px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))' }} />
           <Title className={styles.brandTitle}>AI User Center</Title>
           <Text className={styles.brandSubtitle}>
             下一代智能知识库管理系统。<br />
