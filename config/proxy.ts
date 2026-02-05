@@ -12,13 +12,29 @@
 export default {
   // 如果需要自定义本地开发服务器  请取消注释按需调整
   dev: {
-    // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
-    '/api/': {
-      // 要代理的地址
-      target: 'http://localhost:8080',
-      // 配置了这个可以从 http 代理到 https
-      // 依赖 origin 的功能可能需要这个，比如 cookie
+    // Spring Boot 用户服务 - 端口 5782
+    '/api/user': {
+      target: 'http://127.0.0.1:5782',
       changeOrigin: true,
+    },
+    // Spring Boot 认证服务 - 端口 5782 (新增)
+    '/api/auth': {
+      target: 'http://127.0.0.1:5782',
+      changeOrigin: true,
+    },
+    // Python RAG 服务 - 端口 8000 (前端直连)
+    '/api/rag': {
+      target: 'http://127.0.0.1:8000',
+      changeOrigin: true,
+      pathRewrite: { '^/api/rag': '/api/v1' },
+      // SSE 流式响应配置 - 禁用缓冲
+      onProxyReq: (proxyReq: any) => {
+        proxyReq.setHeader('Connection', 'keep-alive');
+      },
+      onProxyRes: (proxyRes: any) => {
+        proxyRes.headers['Cache-Control'] = 'no-cache, no-transform';
+        proxyRes.headers['X-Accel-Buffering'] = 'no';
+      },
     },
   },
 

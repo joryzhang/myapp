@@ -6,7 +6,12 @@ import proxy from './proxy';
 import routes from './routes';
 const { REACT_APP_ENV = 'dev' } = process.env;
 export default defineConfig({
-  /**
+
+  define: {
+    'process.env.REACT_APP_OPENAI_API_KEY': process.env.REACT_APP_OPENAI_API_KEY,
+    'process.env.REACT_APP_ENV': process.env.REACT_APP_ENV,
+    'process.env.REACT_APP_RAG_API_HOST': process.env.REACT_APP_RAG_API_HOST,
+  },  /**
    * @name 开启 hash 模式
    * @description 让 build 之后的产物包含 hash 后缀。通常用于增量发布和避免浏览器加载缓存。
    * @doc https://umijs.org/docs/api/config#hash
@@ -51,7 +56,36 @@ export default defineConfig({
    * @doc 代理介绍 https://umijs.org/docs/guides/proxy
    * @doc 代理配置 https://umijs.org/docs/api/config#proxy
    */
-  proxy: proxy[REACT_APP_ENV as keyof typeof proxy],
+  proxy: {
+    ...proxy[REACT_APP_ENV as keyof typeof proxy],
+    // '/api/openai': {
+    //   target: 'https://api.chatanywhere.tech',
+    //   changeOrigin: true,
+    //   pathRewrite: { '^/api/openai': '' },
+    //   timeout: 60000,
+    //   onProxyReq: (proxyReq, req, res) => {
+    //     proxyReq.setHeader('Connection', 'keep-alive');
+    //     console.log('OpenAI请求:', {
+    //       method: req.method,
+    //       url: req.url,
+    //       headers: req.headers,
+    //     });
+    //   },
+    //   onProxyRes: (proxyRes, req, res) => {
+    //     console.log('OpenAI响应:', {
+    //       statusCode: proxyRes.statusCode,
+    //       headers: proxyRes.headers,
+    //     });
+    //   },
+    //   onError: (err, req, res) => {
+    //     console.error('OpenAI代理请求错误:', err);
+    //     res.writeHead(500, {
+    //       'Content-Type': 'text/plain',
+    //     });
+    //     res.end('OpenAI代理请求失败，请检查网络连接');
+    //   },
+    // },
+  },
   /**
    * @name 快速热更新配置
    * @description 一个不错的热更新组件，更新时可以保留 state
@@ -73,7 +107,7 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: 'Ant Design Pro',
+  title: 'Jory',
   layout: {
     locale: true,
     ...defaultSettings,
@@ -91,10 +125,10 @@ export default defineConfig({
    * @name 国际化插件
    * @doc https://umijs.org/docs/max/i18n
    */ /**
-   * @name antd 插件
-   * @description 内置了 babel import 插件
-   * @doc https://umijs.org/docs/max/antd#antd
-   */
+* @name antd 插件
+* @description 内置了 babel import 插件
+* @doc https://umijs.org/docs/max/antd#antd
+*/
   antd: {},
   /**
    * @name 网络请求配置
@@ -145,4 +179,5 @@ export default defineConfig({
   },
   esbuildMinifyIIFE: true,
   requestRecord: {},
+  npmClient: 'yarn',
 });
