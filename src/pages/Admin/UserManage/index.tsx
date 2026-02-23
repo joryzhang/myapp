@@ -1,9 +1,10 @@
+import { useResizableColumns } from '@/components/ResizableTitle';
+import { searchUsers } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Image } from 'antd';
 import { useRef } from 'react';
-import { searchUsers } from "@/services/ant-design-pro/api";
 
 export const waitTimePromise = async (time: number = 100) => {
   return new Promise((resolve) => {
@@ -17,68 +18,70 @@ export const waitTime = async (time: number = 100) => {
   await waitTimePromise(time);
 };
 
-
-const columns: ProColumns<API.CurrentUser>[] = [
+const baseColumns: ProColumns<API.CurrentUser>[] = [
   {
     dataIndex: 'id',
     valueType: 'indexBorder',
     width: 48,
+    fixed: 'left',
   },
   {
     title: '用户名',
     dataIndex: 'username',
     ellipsis: true,
+    width: 100,
   },
   {
     title: '账号',
     dataIndex: 'account',
     ellipsis: true,
+    width: 100,
   },
   {
-    title: '用户头像',
+    title: '头像',
     render: (_, record) => (
       <div>
-        <Image src={record.avatar} width={50}></Image>
+        <Image src={record.avatar} width={40} style={{ borderRadius: '50%' }}></Image>
       </div>
     ),
     dataIndex: 'avatar',
-    ellipsis: true,
-  },
-  {
-    title: '用户名',
-    dataIndex: 'username',
-    ellipsis: true,
+    search: false,
+    width: 60,
   },
   {
     title: '性别',
     dataIndex: 'gender',
-    copyable: true,
     ellipsis: true,
+    width: 60,
   },
   {
     title: '手机号',
     dataIndex: 'phone',
     copyable: true,
     ellipsis: true,
+    width: 130,
   },
   {
     title: '邮箱',
     dataIndex: 'email',
     ellipsis: true,
     tooltip: '标题过长会自动收缩',
+    width: 160,
   },
   {
     title: '状态',
     dataIndex: 'status',
     ellipsis: true,
+    width: 60,
   },
   {
     title: '角色',
     dataIndex: 'authority',
     ellipsis: true,
     valueType: 'select',
+    width: 90,
     valueEnum: {
-      0: { text: '普通用户', status: 'Default', },
+      0: { text: '普通用户', status: 'Default' },
       1: {
         text: '管理员',
         status: 'Success',
@@ -90,76 +93,14 @@ const columns: ProColumns<API.CurrentUser>[] = [
     dataIndex: 'createTime',
     valueType: 'date',
     ellipsis: true,
+    width: 110,
   },
-  // {
-  //   disable: true,
-  //   title: '状态',
-  //   dataIndex: 'state',
-  //   filters: true,
-  //   onFilter: true,
-  //   ellipsis: true,
-  //   valueType: 'select',
-  //   valueEnum: {
-  //     all: { text: '超长'.repeat(50) },
-  //     open: {
-  //       text: '未解决',
-  //       status: 'Error',
-  //     },
-  //     closed: {
-  //       text: '已解决',
-  //       status: 'Success',
-  //       disabled: true,
-  //     },
-  //     processing: {
-  //       text: '解决中',
-  //       status: 'Processing',
-  //     },
-  //   },
-  // },
-  // {
-  //   disable: true,
-  //   title: '标签',
-  //   dataIndex: 'labels',
-  //   search: false,
-  //   renderFormItem: (_, { defaultRender }) => {
-  //     return defaultRender(_);
-  //   },
-  //   render: (_, record) => (
-  //     <Space>
-  //       {record.labels.map(({ name, color }) => (
-  //         <Tag color={color} key={name}>
-  //           {name}
-  //         </Tag>
-  //       ))}
-  //     </Space>
-  //   ),
-  // },
-  // {
-  //   title: '创建时间',
-  //   key: 'showTime',
-  //   dataIndex: 'created_at',
-  //   valueType: 'date',
-  //   sorter: true,
-  //   hideInSearch: true,
-  // },
-  // {
-  //   title: '创建时间',
-  //   dataIndex: 'created_at',
-  //   valueType: 'dateRange',
-  //   hideInTable: true,
-  //   search: {
-  //     transform: (value) => {
-  //       return {
-  //         startTime: value[0],
-  //         endTime: value[1],
-  //       };
-  //     },
-  //   },
-  // },
   {
     title: '操作',
     valueType: 'option',
     key: 'option',
+    width: 120,
+    fixed: 'right',
     render: (text, record, _, action) => [
       <a
         key="editable"
@@ -186,19 +127,23 @@ const columns: ProColumns<API.CurrentUser>[] = [
 
 export default () => {
   const actionRef = useRef<ActionType>();
+  const { columns, components } = useResizableColumns(baseColumns);
+
   return (
     <ProTable<API.CurrentUser>
       columns={columns}
+      components={components}
       actionRef={actionRef}
       cardBordered
+      scroll={{ x: 1000 }}
       //@ts-ignore
       request={async (params, sort, filter) => {
         console.log(sort, filter);
         await waitTime(2000);
         const userList = await searchUsers();
         return {
-          data: userList
-        }
+          data: userList,
+        };
       }}
       editable={{
         type: 'multiple',
@@ -220,7 +165,6 @@ export default () => {
         },
       }}
       form={{
-        // 由于配置了 transform，提交的参与与定义的不同这里需要转化一下
         syncToUrl: (values, type) => {
           if (type === 'get') {
             return {
@@ -236,7 +180,7 @@ export default () => {
         onChange: (page) => console.log(page),
       }}
       dateFormatter="string"
-      headerTitle="高级表格"
+      headerTitle="用户管理"
       toolBarRender={() => [
         <Button
           key="button"
@@ -247,7 +191,7 @@ export default () => {
           type="primary"
         >
           新建
-        </Button>
+        </Button>,
       ]}
     />
   );

@@ -14,19 +14,18 @@ export default {
   dev: {
     // Spring Boot 用户服务 - 端口 5782
     '/api/user': {
-      target: 'http://127.0.0.1:5782',
+      target: 'http://localhost:5782',
       changeOrigin: true,
     },
     // Spring Boot 认证服务 - 端口 5782 (新增)
     '/api/auth': {
-      target: 'http://127.0.0.1:5782',
+      target: 'http://localhost:5782',
       changeOrigin: true,
     },
-    // Python RAG 服务 - 端口 8000 (前端直连)
-    '/api/rag': {
-      target: 'http://127.0.0.1:8000',
+    // Python RAG 服务 线上我们用nginx转发
+    '/api/v1': {
+      target: 'http://localhost:8000',
       changeOrigin: true,
-      pathRewrite: { '^/api/rag': '/api/v1' },
       // SSE 流式响应配置 - 禁用缓冲
       onProxyReq: (proxyReq: any) => {
         proxyReq.setHeader('Connection', 'keep-alive');
@@ -36,6 +35,10 @@ export default {
         proxyRes.headers['X-Accel-Buffering'] = 'no';
       },
     },
+    // '/health':{ 仅测试，生产用nginx
+    //   target: 'http://localhost:8000',
+    //   changeOrigin: true,
+    // }
   },
 
   /**

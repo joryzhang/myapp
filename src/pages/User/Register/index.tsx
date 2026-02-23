@@ -1,13 +1,12 @@
-import { Footer } from '@/components';
+import { SYSTEM_LOGO } from '@/constant';
 import { register } from '@/services/ant-design-pro/api';
-import { LockOutlined, UserOutlined, MobileOutlined } from '@ant-design/icons';
-import { LoginForm, ProFormText, ProFormCaptcha } from '@ant-design/pro-components';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { Helmet, history, Link } from '@umijs/max';
-import { Alert, message, Tabs, Typography } from 'antd';
+import { message, Tabs, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import Settings from '../../../../config/defaultSettings';
-import { SYSTEM_LOGO } from "@/constant";
 
 const { Title, Text } = Typography;
 
@@ -43,6 +42,7 @@ const useStyles = createStyles(({ token }) => {
     },
     rightPanel: {
       flex: '0 0 500px',
+      maxWidth: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -73,7 +73,7 @@ const useStyles = createStyles(({ token }) => {
       width: '64px',
       height: '64px',
       marginBottom: '24px',
-    }
+    },
   };
 });
 
@@ -109,31 +109,41 @@ const Register: React.FC = () => {
       <div className={styles.splitLayout}>
         {/* Left Panel - Branding (Consistent with Login) */}
         <div className={styles.leftPanel}>
-          <div style={{
-            position: 'absolute',
-            top: '-10%',
-            left: '-10%',
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            filter: 'blur(40px)',
-          }} />
-          <div style={{
-            position: 'absolute',
-            bottom: '-10%',
-            right: '-10%',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            filter: 'blur(40px)',
-          }} />
+          <div
+            style={{
+              position: 'absolute',
+              top: '-10%',
+              left: '-10%',
+              width: '400px',
+              height: '400px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              filter: 'blur(40px)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-10%',
+              right: '-10%',
+              width: '300px',
+              height: '300px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              filter: 'blur(40px)',
+            }}
+          />
 
-          <img src={SYSTEM_LOGO} alt="logo" className={styles.logo} style={{ filter: 'brightness(0) invert(1)' }} />
+          <img
+            src={SYSTEM_LOGO}
+            alt="logo"
+            className={styles.logo}
+            style={{ filter: 'brightness(0) invert(1)' }}
+          />
           <Title className={styles.brandTitle}>Join Us</Title>
           <Text className={styles.brandSubtitle}>
-            创建您的账号，开启智能之旅。<br />
+            创建您的账号，开启智能之旅。
+            <br />
             Create your account today.
           </Text>
         </div>
@@ -238,9 +248,7 @@ const Register: React.FC = () => {
               )}
 
               <div style={{ marginBottom: 24, textAlign: 'center' }}>
-                <Link to="/user/login">
-                  已有账号？立即登录
-                </Link>
+                <Link to="/user/login">已有账号？立即登录</Link>
               </div>
             </LoginForm>
           </div>

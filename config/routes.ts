@@ -16,6 +16,18 @@ export default [
     routes: [
       { path: '/admin/manage', name: '用户管理', component: './Admin/UserManage' },
       { path: '/admin/upload', name: 'PDF上传', icon: 'upload', component: './Admin/Upload' },
+      {
+        path: '/admin/vectors',
+        name: '向量库管理',
+        icon: 'database',
+        component: './Admin/VectorManage',
+      },
+      {
+        path: '/admin/rag-config',
+        name: 'RAG调参',
+        icon: 'setting',
+        component: './Admin/RAGConfig',
+      },
       { path: '/admin', redirect: '/admin/manage' },
     ],
   },

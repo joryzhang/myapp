@@ -1,15 +1,13 @@
-import { Footer } from '@/components';
 import Logo from '@/components/Logo';
 import { login } from '@/services/ant-design-pro/api';
-import { LockOutlined, UserOutlined, AlipayCircleOutlined, TaobaoCircleOutlined, WeiboCircleOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { Helmet, history, Link, useModel } from '@umijs/max';
-import { Alert, message, Tabs, Col, Row, Typography } from 'antd';
+import { message, Tabs, Typography } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
-import { GIT_HUB } from "@/constant";
 
 const { Title, Text } = Typography;
 
@@ -45,6 +43,7 @@ const useStyles = createStyles(({ token }) => {
     },
     rightPanel: {
       flex: '0 0 500px',
+      maxWidth: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
@@ -75,24 +74,9 @@ const useStyles = createStyles(({ token }) => {
       width: '64px',
       height: '64px',
       marginBottom: '24px',
-    }
+    },
   };
 });
-
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({ content }) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
 
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');
@@ -139,31 +123,38 @@ const Login: React.FC = () => {
         {/* Left Panel - Branding */}
         <div className={styles.leftPanel}>
           {/* Decorative Circle */}
-          <div style={{
-            position: 'absolute',
-            top: '-10%',
-            left: '-10%',
-            width: '400px',
-            height: '400px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            filter: 'blur(40px)',
-          }} />
-          <div style={{
-            position: 'absolute',
-            bottom: '-10%',
-            right: '-10%',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)',
-            filter: 'blur(40px)',
-          }} />
+          <div
+            style={{
+              position: 'absolute',
+              top: '-10%',
+              left: '-10%',
+              width: '400px',
+              height: '400px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              filter: 'blur(40px)',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-10%',
+              right: '-10%',
+              width: '300px',
+              height: '300px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              filter: 'blur(40px)',
+            }}
+          />
 
-          <Logo style={{ marginBottom: '24px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))' }} />
+          <Logo
+            style={{ marginBottom: '24px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))' }}
+          />
           <Title className={styles.brandTitle}>AI User Center</Title>
           <Text className={styles.brandSubtitle}>
-            下一代智能知识库管理系统。<br />
+            下一代智能知识库管理系统。
+            <br />
             Efficient, Intelligent, Secure.
           </Text>
         </div>
@@ -187,16 +178,18 @@ const Login: React.FC = () => {
               initialValues={{
                 autoLogin: true,
               }}
-              actions={[
-                // <div key="loginWith" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                //     <Text type="secondary" style={{ marginBottom: 8 }}>其他登录方式</Text>
-                //     <div style={{ display: 'flex', gap: 16 }}>
-                //         <AlipayCircleOutlined style={{ fontSize: 24, color: '#1890ff' }} />
-                //         <TaobaoCircleOutlined style={{ fontSize: 24, color: '#ff4d4f' }} />
-                //         <WeiboCircleOutlined style={{ fontSize: 24, color: '#fa8c16' }} />
-                //     </div>
-                // </div>
-              ]}
+              actions={
+                [
+                  // <div key="loginWith" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                  //     <Text type="secondary" style={{ marginBottom: 8 }}>其他登录方式</Text>
+                  //     <div style={{ display: 'flex', gap: 16 }}>
+                  //         <AlipayCircleOutlined style={{ fontSize: 24, color: '#1890ff' }} />
+                  //         <TaobaoCircleOutlined style={{ fontSize: 24, color: '#ff4d4f' }} />
+                  //         <WeiboCircleOutlined style={{ fontSize: 24, color: '#fa8c16' }} />
+                  //     </div>
+                  // </div>
+                ]
+              }
               onFinish={async (values) => {
                 await handleSubmit(values as API.LoginParams);
               }}
@@ -264,9 +257,7 @@ const Login: React.FC = () => {
                 <ProFormCheckbox noStyle name="autoLogin">
                   自动登录
                 </ProFormCheckbox>
-                <Link to="/user/register">
-                  注册新账号
-                </Link>
+                <Link to="/user/register">注册新账号</Link>
               </div>
             </LoginForm>
           </div>
